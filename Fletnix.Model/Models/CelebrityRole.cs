@@ -2,12 +2,11 @@
 
 namespace Fletnix.Models
 {
-    public class Feature
+    public class CelebrityRole
     {
         public Guid Id { get; set; }
-        public Guid SubscriptionId { get; set; }
-
         public string Name { get; set; }
-        public string Description { get; set; }
+
+        public int Order { get; set; }
     }
 }

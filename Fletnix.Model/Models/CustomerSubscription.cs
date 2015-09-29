@@ -4,8 +4,12 @@ namespace Fletnix.Models
 {
     public class CustomerSubscription
     {
-        public Customer Customer { get; set; }
-        public Subscription Subscription { get; set; }
+        public Guid Id { get; set; }
+
+        public virtual Customer Customer { get; set; }
+
+        public virtual Subscription Subscription { get; set; }
+        public Guid SubscriptionId { get; set; }
 
         // When did the customer subscribe?
         public DateTime SubscriptionTimeStamp { get; set; }

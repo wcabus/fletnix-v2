@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Fletnix.Repositories;
+using Fletnix.Services;
 using Fletnix.WebApi.Models;
 
 namespace Fletnix.WebApi.Controllers
@@ -10,18 +10,18 @@ namespace Fletnix.WebApi.Controllers
     [RoutePrefix("api/subscriptions")]
     public class SubscriptionController : ApiController
     {
-        private readonly ISubscriptionRepository _subscriptionRepository;
+        private readonly ISubscriptionService _service;
 
-        public SubscriptionController(ISubscriptionRepository subscriptionRepository)
+        public SubscriptionController(ISubscriptionService service)
         {
-            _subscriptionRepository = subscriptionRepository;
+            _service = service;
         }
 
 
         [Route, AllowAnonymous]
         public async Task<IHttpActionResult> Get()
         {
-            var subscriptions = (await _subscriptionRepository.GetSubscriptions()).ToListOrNull();
+            var subscriptions = await _service.GetSubscriptionsAsync();
             if (subscriptions == null || !subscriptions.Any())
             {
                 return NotFound();
@@ -33,7 +33,7 @@ namespace Fletnix.WebApi.Controllers
         [Route("{id:guid}", Name = "GetSubscription"), AllowAnonymous]
         public async Task<IHttpActionResult> GetById(Guid id)
         {
-            var subscription = await _subscriptionRepository.GetSubscriptionById(id);
+            var subscription = await _service.GetSubscriptionByIdAsync(id);
             if (subscription == null)
             {
                 return NotFound();
@@ -50,7 +50,7 @@ namespace Fletnix.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await _subscriptionRepository.CreateSubscription(model.Name, model.Price);
+            var result = await _service.CreateSubscriptionAsync(model.Name, model.Price);
             return CreatedAtRoute("GetSubscription", new {id = result.Id}, result);
         }
     }
