@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Fletnix.Models;
 using Fletnix.Services;
 using Fletnix.WebApi.Models;
 
@@ -19,9 +22,19 @@ namespace Fletnix.WebApi.Controllers
 
 
         [Route, AllowAnonymous]
-        public async Task<IHttpActionResult> Get()
+        public async Task<IHttpActionResult> Get(string include = null)
         {
-            var subscriptions = await _service.GetSubscriptionsAsync();
+            IList<Subscription> subscriptions;
+
+            if (string.Equals(include, "features", StringComparison.OrdinalIgnoreCase))
+            {
+                subscriptions = await _service.GetSubscriptionsAndFeaturesAsync();
+            }
+            else
+            {
+                subscriptions = await _service.GetSubscriptionsAsync();
+            }
+
             if (subscriptions == null || !subscriptions.Any())
             {
                 return NotFound();
@@ -40,6 +53,23 @@ namespace Fletnix.WebApi.Controllers
             }
 
             return Ok(subscription);
+        }
+
+        [Route("{id:guid}/Features"), AllowAnonymous]
+        public async Task<IHttpActionResult> GetFeatures(Guid id)
+        {
+            if (await _service.GetSubscriptionByIdAsync(id) == null)
+            {
+                return NotFound();
+            }
+
+            var features = await _service.GetFeaturesForSubscription(id);
+            if (features == null || !features.Any())
+            {
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+
+            return Ok(features);
         }
 
         [Route, HttpPost]
