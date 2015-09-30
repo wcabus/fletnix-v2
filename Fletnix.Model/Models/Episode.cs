@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Fletnix.Models
 {
@@ -6,5 +7,7 @@ namespace Fletnix.Models
     {
         public virtual TvShowSeason Season { get; set; }
         public Guid SeasonId { get; set; }
+
+        public virtual ICollection<EpisodeCastMember> Cast { get; set; }
     }
 }

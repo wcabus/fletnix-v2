@@ -68,8 +68,8 @@ namespace Fletnix.Data
 
             episode
                 .HasMany(e => e.Cast)
-                .WithRequired()
-                .HasForeignKey(c => c.ParentId)
+                .WithRequired(c => c.Episode)
+                .HasForeignKey(c => c.EpisodeId)
                 .WillCascadeOnDelete();
 
             episode
@@ -92,19 +92,32 @@ namespace Fletnix.Data
 
             movie
                 .HasMany(m => m.Cast)
-                .WithRequired()
-                .HasForeignKey(c => c.ParentId)
+                .WithRequired(c => c.Movie)
+                .HasForeignKey(c => c.MovieId)
                 .WillCascadeOnDelete();
 
-            var cast = modelBuilder.Entity<CastMember>();
-            cast.HasKey(c => new {c.ParentId, c.CelebrityId, c.RoleId});
+            var movieCast = modelBuilder.Entity<MovieCastMember>();
+            movieCast.HasKey(c => new {c.MovieId, c.CelebrityId, c.RoleId});
 
-            cast
+            movieCast
                 .HasRequired(c => c.Celebrity)
                 .WithMany()
                 .HasForeignKey(c => c.CelebrityId);
 
-            cast
+            movieCast
+                .HasRequired(c => c.Role)
+                .WithMany()
+                .HasForeignKey(c => c.RoleId);
+
+            var episodeCast = modelBuilder.Entity<EpisodeCastMember>();
+            episodeCast.HasKey(c => new { c.EpisodeId, c.CelebrityId, c.RoleId });
+
+            episodeCast
+                .HasRequired(c => c.Celebrity)
+                .WithMany()
+                .HasForeignKey(c => c.CelebrityId);
+
+            episodeCast
                 .HasRequired(c => c.Role)
                 .WithMany()
                 .HasForeignKey(c => c.RoleId);

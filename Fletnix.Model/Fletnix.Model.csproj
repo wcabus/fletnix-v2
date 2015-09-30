@@ -46,11 +46,13 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerSubscription.cs" />
     <Compile Include="Models\Episode.cs" />
+    <Compile Include="Models\EpisodeCastMember.cs" />
     <Compile Include="Models\Feature.cs" />
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\Language.cs" />
     <Compile Include="Models\Mediastream.cs" />
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\MovieCastMember.cs" />
     <Compile Include="Models\Subscription.cs" />
     <Compile Include="Models\TvShow.cs" />
     <Compile Include="Models\TvShowSeason.cs" />

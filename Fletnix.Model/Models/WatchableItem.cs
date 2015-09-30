@@ -14,7 +14,5 @@ namespace Fletnix.Models
         public string ImageUri { get; set; }
 
         public TimeSpan Duration { get; set; }
-
-        public virtual ICollection<CastMember> Cast { get; set; }
     }
 }
