@@ -25,7 +25,7 @@ namespace Fletnix.WebApi
             ConfigureMediaTypeFormatters(config);
 
             // Add an AuthorizeAttribute to disallow anonymous access by default
-            config.Filters.Add(new AuthorizeAttribute());
+            // config.Filters.Add(new AuthorizeAttribute());
 
             // Configure dependency injection
             ConfigureAutofac(config);
